@@ -1,0 +1,125 @@
+import time
+import random
+
+# A minimalist dictionary mapping common color names to basic RGB values
+# This helps us calculate how close two colors are if the user spells them slightly differently.
+COLOR_MAP = {
+    "red": (255, 0, 0), "crimson": (220, 20, 60), "pink": (255, 192, 203),
+    "blue": (0, 0, 255), "navy": (0, 0, 128), "sky blue": (135, 206, 235),
+    "green": (0, 128, 0), "lime": (0, 255, 0), "teal": (0, 128, 128),
+    "yellow": (255, 255, 0), "gold": (255, 215, 0),
+    "orange": (255, 165, 0),
+    "purple": (128, 0, 128), "violet": (238, 130, 238),
+    "black": (0, 0, 0), "white": (255, 255, 255), "grey": (128, 128, 128)
+}
+
+def main():
+    print_intro()
+    
+    # Stimuli to test: a mix of graphemes (letters) and abstract concepts
+    stimuli = ["A", "7", "E", "Friday", "Joy", "Melancholy"]
+    
+    # Phase 1: Initial Associations
+    print("\n--- PHASE 1: INITIAL ASSOCIATIONS ---")
+    print("Type the first color that flashes across your mind. Be specific if you wish!")
+    # Shuffle so it feels organic
+    random.shuffle(stimuli)
+    phase_1_results = run_test_phase(stimuli)
+    
+    # Intermission to cleanse the sensory palate
+    run_intermission()
+    
+    # Phase 2: Consistency Check
+    print("\n--- PHASE 2: CONSISTENCY VERIFICATION ---")
+    print("Let's look at these stimuli once more. Trust your immediate perception.")
+    # Shuffle again so they can't easily remember the previous order
+    random.shuffle(stimuli)
+    phase_2_results = run_test_phase(stimuli)
+    
+    # Analyze and present the perception profile
+    calculate_and_display_results(phase_1_results, phase_2_results)
+
+def print_intro():
+    print("=" * 60)
+    print("       SYNESTHESIA & PERCEPTION EXPERIMENT")
+    print("=" * 60)
+    print("Synesthesia is a neurological trait where senses cross over.")
+    print("This program measures your color-grapheme and concept consistency.")
+    print("Please answer with clean, single-word colors (e.g., Red, Gold, Navy).")
+    print("=" * 60)
+    input("\nPress ENTER when you are ready to begin...")
+
+def run_test_phase(stimuli_list):
+    """Loops through stimuli, tracks user answers, and measures response time."""
+    results = {}
+    for stimulus in stimuli_list:
+        start_time = time.time()
+        answer = input(f"What color is the concept/character [{stimulus}]? ").strip().lower()
+        elapsed_time = time.time() - start_time
+        
+        # Save both the color answer and how fast they reacted
+        results[stimulus] = {
+            "color": answer,
+            "reaction_time": round(elapsed_time, 2)
+        }
+    return results
+
+def run_intermission():
+    print("\n" * 3)
+    print("--- PALATE CLEANSER ---")
+    print("Phase 1 complete. Pausing for 5 seconds to clear your visual memory...")
+    for i in range(5, 0, -1):
+        print(f"Resuming Phase 2 in {i}...")
+        time.sleep(1)
+    print("\n" * 5)
+
+def calculate_and_display_results(p1, p2):
+    """Compares Phase 1 and Phase 2 to determine perception consistency."""
+    print("\n" * 2)
+    print("=" * 60)
+    print("               YOUR PERCEPTION PROFILE")
+    print("=" * 60)
+    
+    exact_matches = 0
+    total_stimuli = len(p1)
+    
+    print(f"{'Stimulus':<12} | {'Phase 1 Color':<15} | {'Phase 2 Color':<15} | {'Match?'}")
+    print("-" * 60)
+    
+    for stimulus in p1:
+        color1 = p1[stimulus]["color"]
+        color2 = p2[stimulus]["color"]
+        
+        if color1 == color2:
+            match_status = "EXACT MATCH"
+            exact_matches += 1
+        elif color1 in COLOR_MAP and color2 in COLOR_MAP:
+            # Subtle check: if they typed "navy" then "blue", it's a semantic close match
+            match_status = "CLOSE MATCH"
+            exact_matches += 0.5
+        else:
+            match_status = "MISMATCH"
+            
+        print(f"{stimulus:<12} | {color1:<15} | {color2:<15} | {match_status}")
+
+    # Calculate overall consistency percentage
+    consistency_score = int((exact_matches / total_stimuli) * 100)
+    
+    print("-" * 60)
+    print(f"OVERALL SYNESTHETIC CONSISTENCY: {consistency_score}%")
+    print("=" * 60)
+    
+    # Psychological interpretation block
+    if consistency_score >= 85:
+        print("Insight: Highly Consistent. Your sensory links are incredibly stable,")
+        print("which is a classic indicator of genuine color-grapheme synesthesia!")
+    elif 50 <= consistency_score < 85:
+        print("Insight: Moderate Association. You have fixed aesthetic preferences for")
+        print("certain symbols, though some variations occurred.")
+    else:
+        print("Insight: Standard Flexible Perception. Your brain generates associations")
+        print("dynamically on the spot rather than keeping rigid sensory mappings.")
+    print("=" * 60)
+
+if __name__ == '__main__':
+    main()
