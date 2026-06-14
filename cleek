@@ -1,123 +1,112 @@
+
 """
-File: celebrity_match.py
--------------------------
-This program calculates a user's unique aura color based on the numeric value
-of their name and a personalized style quiz. It then uses a dictionary to 
-map their final score to a matching celebrity and personality vibe profile.
+Brain Type Quiz
+A simple program that matches users to a brain type based on a quiz.
 """
 
-# A dictionary mapping colors to specific celebrity matches and profiles
-# This uses the key-value pairing taught in the second half of the course
-CELEBRITY_MATCHES = {
-    "Electric Blue": {
-        "celebrity": "Lily-Rose Depp",
-        "vibe": "Effortlessly cool, analytical, and possesses a sharp, minimalist aesthetic."
-    },
-    "Radiant Yellow": {
-        "celebrity": "Zendaya",
-        "vibe": "Charismatic, vibrant, and radiates brilliant, positive energy wherever they go."
-    },
-    "Crimson Red": {
-        "celebrity": "Pedro Pascal",
-        "vibe": "Bold, warm, incredibly passionate, and fiercely loyal."
-    },
-    "Deep Purple": {
-        "celebrity": "Timothée Chalamet",
-        "vibe": "Artistic, deeply thoughtful, mysterious, and highly creative."
-    }
-}
+def ask_question(question, options):
+    print("\n" + question)
+    for option in options:
+        print(option)
 
-def get_name_score(name):
-    """
-    Cleans the name string by removing spaces and converting to lowercase.
-    Sums the ASCII values of individual characters to generate a baseline score.
-    """
-    score = 0
-    # .replace() and .lower() handle string cleanup so uppercase letters don't change the math
-    clean_name = name.replace(" ", "").lower()
-    for char in clean_name:
-        score += ord(char) # ord() turns a letter into a number (e.g., 'a' becomes 97)
-    return score
+    while True:
+        answer = input("Your choice: ").strip().upper()
+        if answer in ["A", "B", "C", "D"]:
+            return answer
+        print("Please enter A, B, C, or D.")
 
-def ask_quiz_questions():
-    """
-    Gathers quiz inputs from the user with strict validation loops.
-    Returns a combined point score based on their choices.
-    """
-    total_quiz_score = 0
-    
-    print("\n--- QUICK VIBE CHECK ---")
-    print("1. What is your go-to style aesthetic?")
-    print("   A) Classic & Minimalist")
-    print("   B) Bold & Vibrant")
-    print("   C) Cozy & Artistic")
-    
-    # Standard Code in Place 'while True' validation loop
-    while True:
-        choice1 = input("Choose A, B, or C: ").strip().upper()
-        if choice1 == 'A':
-            total_quiz_score += 15
-            break
-        elif choice1 == 'B':
-            total_quiz_score += 25
-            break
-        elif choice1 == 'C':
-            total_quiz_score += 35
-            break
-        print("Invalid choice. Please enter A, B, or C.")
-        
-    print("\n2. Choose an ideal weekend activity:")
-    print("   A) Deep-diving a fascinating research rabbit hole or reading")
-    print("   B) Getting dressed up for a lively dinner party with friends")
-    print("   C) Immersing yourself in a creative writing or art project")
-    
-    while True:
-        choice2 = input("Choose A, B, or C: ").strip().upper()
-        if choice2 == 'A':
-            total_quiz_score += 15
-            break
-        elif choice2 == 'B':
-            total_quiz_score += 25
-            break
-        elif choice2 == 'C':
-            total_quiz_score += 35
-            break
-        print("Invalid choice. Please enter A, B, or C.")
-        
-    return total_quiz_score
 
 def main():
-    print("=========================================")
-    print("🔮 THE CELEBRITY COLOR VIBE MATCH TEST 🔮")
-    print("=========================================")
-    
-    # Prompt user for name and prevent empty inputs
-    name = input("Enter your name: ").strip()
-    while not name:
-        name = input("Name cannot be blank. Please enter your name: ").strip()
-        
-    # Calculate components and grand total score
-    name_score = get_name_score(name)
-    quiz_score = ask_quiz_questions()
-    final_score = name_score + quiz_score
-    
-    # Convert dictionary keys into a list to index them using modulo (%)
-    color_keys = list(CELEBRITY_MATCHES.keys())
-    color_index = final_score % len(color_keys)
-    assigned_color = color_keys[color_index]
-    
-    # Extract matching data from dictionary
-    match_data = CELEBRITY_MATCHES[assigned_color]
-    
-    # Output the final results clearly in the console
-    print("\n=========================================")
-    print("✨ YOUR RESULTS ARE IN ✨")
-    print("=========================================")
-    print(f"Hi {name}, your calculated aura energy is: {assigned_color}!")
-    print(f"Your Celebrity Match is: {match_data['celebrity']}")
-    print(f"Vibe Profile: {match_data['vibe']}")
-    print("=========================================")
+    print("===================================")
+    print("        BRAIN TYPE QUIZ")
+    print("===================================")
 
-# This is the standard boilerplate required to start Python programs in CS106A
-if __name__ == '__main__':
+    name = input("Enter your name: ").strip()
+
+    while name == "":
+        name = input("Name cannot be empty. Enter your name: ").strip()
+
+    score = 0
+
+    # Question 1
+    q1 = "1. What do you enjoy most?"
+    o1 = [
+        "A) Solving puzzles",
+        "B) Creating art",
+        "C) Helping people",
+        "D) Exploring new places"
+    ]
+    a1 = ask_question(q1, o1)
+
+    if a1 == "A":
+        score += 10
+    elif a1 == "B":
+        score += 20
+    elif a1 == "C":
+        score += 30
+    else:
+        score += 40
+
+    # Question 2
+    q2 = "2. What describes you best?"
+    o2 = [
+        "A) Logical",
+        "B) Creative",
+        "C) Caring",
+        "D) Adventurous"
+    ]
+    a2 = ask_question(q2, o2)
+
+    if a2 == "A":
+        score += 10
+    elif a2 == "B":
+        score += 20
+    elif a2 == "C":
+        score += 30
+    else:
+        score += 40
+
+    # Question 3
+    q3 = "3. Your ideal weekend?"
+    o3 = [
+        "A) Reading or learning",
+        "B) Creating something",
+        "C) Spending time with friends",
+        "D) Going somewhere new"
+    ]
+    a3 = ask_question(q3, o3)
+
+    if a3 == "A":
+        score += 10
+    elif a3 == "B":
+        score += 20
+    elif a3 == "C":
+        score += 30
+    else:
+        score += 40
+
+    # Result logic (simple, beginner-friendly)
+    if score <= 30:
+        brain = "Analytical Brain 🧠"
+        desc = "You are logical and love solving problems."
+    elif score <= 60:
+        brain = "Creative Brain 🎨"
+        desc = "You are imaginative and expressive."
+    elif score <= 90:
+        brain = "Social Brain 💬"
+        desc = "You are kind and people-oriented."
+    else:
+        brain = "Explorer Brain 🌍"
+        desc = "You love adventure and new experiences."
+
+    print("\n===================================")
+    print("RESULTS")
+    print("===================================")
+    print("Name:", name)
+    print("Brain Type:", brain)
+    print(desc)
+    print("===================================")
+
+
+if __name__ == "__main__":
     main()
